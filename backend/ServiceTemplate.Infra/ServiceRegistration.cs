@@ -33,6 +33,9 @@ public static class ServiceRegistration
         services.AddScoped<IIdGenerator, GuidIdGenerator>();
         services.AddScoped<IClock, SystemClock>();
 
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserProvider, HttpContextCurrentUserProvider>();
+
         return services;
     }
 }

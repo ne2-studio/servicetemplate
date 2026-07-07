@@ -10,13 +10,15 @@ public class TaskManager(
     ITaskRepository repository,
     IIdGenerator idGenerator,
     INotifier notifier,
-    IClock clock) : ITaskManager
+    IClock clock,
+    ICurrentUserProvider currentUserProvider) : ITaskManager
 {
     public async Task<Result<TaskDto>> CreateAsync(string title)
     {
         logger.LogInformation("CreateAsync - Creating task {Title}", title);
 
-        var task = new TaskItem(idGenerator.NewId(), title, clock.UtcNow());
+        var userId = currentUserProvider.GetUserId();
+        var task = new TaskItem(idGenerator.NewId(), userId, title, clock.UtcNow());
         await repository.SaveAsync(task);
         await notifier.NotifyTaskCreatedAsync(task);
 
@@ -30,7 +32,8 @@ public class TaskManager(
 
         try
         {
-            var tasks = await repository.ListAsync(skip, take);
+            var userId = currentUserProvider.GetUserId();
+            var tasks = await repository.ListAsync(userId, skip, take);
             var dtos = tasks.Select(ToDto);
             logger.LogInformation("ListAsync - Successfully fetched {Count} tasks", tasks.Count());
             return Result.Success(dtos);
@@ -45,7 +48,9 @@ public class TaskManager(
     public async Task<Result> DeleteAsync(Guid id)
     {
         logger.LogInformation("DeleteAsync - Deleting task {Id}", id);
-        var task = await repository.LoadByIdAsync(id);
+
+        var userId = currentUserProvider.GetUserId();
+        var task = await repository.LoadByIdAsync(id, userId);
 
         if (task == null)
         {
@@ -53,7 +58,7 @@ public class TaskManager(
             return Result.Failure($"The task {id} does not exist.");
         }
 
-        await repository.DeleteAsync(id);
+        await repository.DeleteAsync(id, userId);
 
         logger.LogInformation("DeleteAsync - Task {Id} deleted", id);
         return Result.Success();
