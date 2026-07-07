@@ -3,13 +3,6 @@
 Starting point for new `exeal/ne2-studio` projects: a monorepo with a `frontend/` and `backend/`
 scaffolded to match [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
-**Status: work in progress.** The pieces here were pulled together from prior projects and don't
-all line up yet — expect naming inconsistencies (e.g. deploy workflows still reference a source
-project's image names instead of `{ProjectName}`), and gaps between what `docs/ARCHITECTURE.md`
-prescribes and what's actually scaffolded. Treat this as a reference to assemble a new project
-from, not a turnkey `git clone` — check each piece against the architecture doc as you copy it
-over, rather than assuming it's already correct.
-
 ## What's here
 
 | Directory | Contents |
@@ -81,13 +74,25 @@ npm run dev
 
 See [`frontend/README.md`](frontend/README.md) for details.
 
+### Everything via Docker Compose
+
+`docker-compose.yaml` at the repo root spins up Postgres, the backend, and the frontend together,
+each service built from its own `Dockerfile`. The frontend image only copies a pre-built `dist/`
+(it doesn't run `npm run build` itself), so build the frontend once first:
+
+```bash
+cd frontend && cp .env.example .env && npm install && npm run build && cd ..
+docker compose up --build
+```
+
+Backend: http://localhost:5050 · Frontend: http://localhost:3000 · Postgres: localhost:5432.
+
 ## Deployment
 
 Both services are containerized and deploy independently. CI/CD runs on push to `main`
 (path-filtered per service), builds a Docker image, pushes it to GitHub Container Registry, and
 triggers a Coolify deploy webhook — see `.github/workflows/backend-deploy.yml` and
-`frontend-deploy.yml`. **These still need the image names and webhook secrets updated per new
-project** (see "Using this template for a new project" above).
+`frontend-deploy.yml`.
 
 ## License
 
