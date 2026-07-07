@@ -4,11 +4,11 @@ namespace ServiceTemplate.Tests.Fakes;
 
 public class SpyNotifier : INotifier
 {
-    public List<Widget> NotifiedWidgets { get; } = new();
+    public List<TaskItem> NotifiedTasks { get; } = new();
 
-    public Task NotifyWidgetCreatedAsync(Widget widget)
+    public Task NotifyTaskCreatedAsync(TaskItem task)
     {
-        NotifiedWidgets.Add(widget);
+        NotifiedTasks.Add(task);
         return Task.CompletedTask;
     }
 }

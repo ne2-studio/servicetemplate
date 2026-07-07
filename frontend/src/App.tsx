@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
-import { useItemStore } from './store/useItemStore';
+import { useTaskStore } from './store/useTaskStore';
 import { Layout } from './components/Layout';
-import { Items } from './components/Items';
+import { Tasks } from './components/Tasks';
 import { setAccessToken } from './api';
 
 export default function App() {
   const auth = useAuth();
-  const { fetchData, isLoading, error } = useItemStore();
+  const { fetchData, isLoading, error } = useTaskStore();
 
   useEffect(() => {
     setAccessToken(auth.user?.access_token);
@@ -74,7 +74,7 @@ export default function App() {
     <BrowserRouter>
       <Layout onLogout={handleLogout}>
         <Routes>
-          <Route path="/" element={<Items />} />
+          <Route path="/" element={<Tasks />} />
           <Route path="/callback" element={null} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -15,13 +15,15 @@ over, rather than assuming it's already correct.
 | Directory | Contents |
 |-----------|----------|
 | `docs/ARCHITECTURE.md` | The architecture standard both services should follow |
-| `backend/` | ASP.NET Core (.NET 10) ports & adapters scaffold, with a `Widget` CRUD slice as a working reference implementation — see [`backend/README.md`](backend/README.md) |
-| `frontend/` | React 19 + Vite + Zustand scaffold, with an `Item` domain as a working reference implementation — see [`frontend/README.md`](frontend/README.md) |
+| `docs/API.md` | The API contract for the `Task` reference slice |
+| `backend/` | ASP.NET Core (.NET 10) ports & adapters scaffold, with a `Task` CRUD slice as a working reference implementation — see [`backend/README.md`](backend/README.md) |
+| `frontend/` | React 19 + Vite + Zustand scaffold, consuming the same `Task` domain — see [`frontend/README.md`](frontend/README.md) |
 | `.github/workflows/` | Path-filtered CI/CD for each service (build → test → Docker image → registry → deploy webhook) |
 
-The `Widget`/`Item` example resources exist purely to exercise every layer/convention end-to-end
-so you have something to read and adapt, not to demonstrate a feature. Replace them with the new
-project's actual domain — see each service's README for the specific steps.
+The `Task` example resource (add/list/delete a task list) exists to exercise every layer/convention
+end-to-end, front-to-back, so you have a working slice to read and adapt, not to demonstrate a
+real feature. Replace it with the new project's actual domain — see each service's README for the
+specific steps.
 
 ## Using this template for a new project
 

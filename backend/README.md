@@ -4,16 +4,16 @@ Starting point for new backend services, scaffolded to match the conventions in
 [`docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md). ASP.NET Core (.NET 10) with a ports & adapters
 layout, PostgreSQL via Dapper + FluentMigrator, JWT bearer auth, and Serilog.
 
-It ships with one example resource — **widgets** — a minimal CRUD slice that exercises every
-convention end-to-end so you have a working reference instead of an empty shell:
+It ships with one example resource — **tasks** (add/list/delete, paired with the frontend's task
+list screen) — a minimal CRUD slice that exercises every convention end-to-end so you have a
+working reference instead of an empty shell:
 
 - `Result<T>` for expected failures instead of exceptions/try-catch-500
-- an output port per external effect (`IClock`, `IIdGenerator`, `IWidgetRepository`, `INotifier`)
-- a caching **decorator** (`CachedWidgetRepository`) composed at the DI root, registered `Singleton`
+- an output port per external effect (`IClock`, `IIdGenerator`, `ITaskRepository`, `INotifier`)
+- a caching **decorator** (`CachedTaskRepository`) composed at the DI root, registered `Singleton`
   as a deliberate, documented exception to the default `Scoped` lifetime
 - the **Null Object pattern** for feature-flagged behavior (`INotifier` swaps between `LoggingNotifier`
   and `NullNotifier` based on `Features:Notifications:Enabled`, decided once in `ServiceRegistration`)
-- an app-level uniqueness check backed by a DB unique constraint as defense-in-depth against races
 - a public, unauthenticated, rate-limited endpoint (`/health`) alongside JWT-protected resource endpoints
 - two-tier testing: hand-written fakes for core/application logic, NSubstitute mocks for the infra decorator
 
@@ -23,7 +23,7 @@ convention end-to-end so you have a working reference instead of an empty shell:
 2. Rename `ServiceTemplate` throughout — project folders, `.csproj`/`.sln` file names, namespaces,
    `AssemblyName`s, and references to `ServiceTemplate.Api` / `ServiceTemplate.Infra` — to your
    `{ProjectName}`.
-3. Replace the `Widget` domain (entity, repository, use case, controller, migration) with your actual
+3. Replace the `Task` domain (entity, repository, use case, controller, migration) with your actual
    domain, keeping the same layering: `Ports/Input` for use-case contracts, `Ports/Output` for
    everything external, `Application/` for business logic, `Infra/` for adapters.
 4. Update `Auth:Authority` / `Auth:Audience` in `appsettings.json`, the database name in the connection
@@ -39,15 +39,14 @@ ServiceTemplate.Api    — HTTP entry point (controllers, JWT validation)
 
 ## API endpoints
 
-Widget management endpoints require a valid JWT (`Authorization: Bearer <token>`).
+Task management endpoints require a valid JWT (`Authorization: Bearer <token>`). Full request/response
+shapes are documented in [`docs/API.md`](../docs/API.md).
 
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
-| `POST` | `/api/widgets` | Required | Create a widget |
-| `GET` | `/api/widgets` | Required | List widgets (paginated) |
-| `GET` | `/api/widgets/{id}` | Required | Get a widget by id |
-| `PATCH` | `/api/widgets/{id}` | Required | Rename a widget |
-| `DELETE` | `/api/widgets/{id}` | Required | Delete a widget |
+| `POST` | `/api/tasks` | Required | Create a task |
+| `GET` | `/api/tasks` | Required | List tasks (paginated) |
+| `DELETE` | `/api/tasks/{id}` | Required | Delete a task |
 | `GET` | `/health` | Public (rate-limited) | Liveness check |
 
 ## Getting started

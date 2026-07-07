@@ -9,9 +9,9 @@ namespace ServiceTemplate.Infra;
 /// </summary>
 public class LoggingNotifier(ILogger<LoggingNotifier> logger) : INotifier
 {
-    public Task NotifyWidgetCreatedAsync(Widget widget)
+    public Task NotifyTaskCreatedAsync(TaskItem task)
     {
-        logger.LogInformation("Notifying external systems that widget {Id} ({Name}) was created", widget.Id, widget.Name);
+        logger.LogInformation("Notifying external systems that task {Id} ({Title}) was created", task.Id, task.Title);
         return Task.CompletedTask;
     }
 }

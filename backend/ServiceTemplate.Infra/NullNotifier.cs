@@ -4,7 +4,7 @@ namespace ServiceTemplate.Infra;
 
 public class NullNotifier : INotifier
 {
-    public Task NotifyWidgetCreatedAsync(Widget widget)
+    public Task NotifyTaskCreatedAsync(TaskItem task)
     {
         return Task.CompletedTask;
     }

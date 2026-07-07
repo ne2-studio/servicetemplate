@@ -1,6 +1,6 @@
 # {ProjectName} Frontend
 
-Scaffold following the conventions in `docs/ARCHITECTURE.md`. Includes an example `Item` domain (`types.ts` → `api.ts` → `store/useItemStore.ts` → `components/Items.tsx`) to illustrate the layering — replace it with the project's real domain(s).
+Scaffold following the conventions in `docs/ARCHITECTURE.md`. Includes an example `Task` domain (`types.ts` → `api.ts` → `store/useTaskStore.ts` → `components/Tasks.tsx`) to illustrate the layering — replace it with the project's real domain(s). It talks to the backend's `Task` reference slice; see [`docs/API.md`](../docs/API.md) for the contract.
 
 ## Run locally
 

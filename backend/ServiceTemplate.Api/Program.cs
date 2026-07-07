@@ -74,7 +74,7 @@ builder.Services.AddRateLimiter(options =>
 });
 
 // Register application services
-builder.Services.AddScoped<IWidgetManager, WidgetManager>();
+builder.Services.AddScoped<ITaskManager, TaskManager>();
 
 // Register infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);

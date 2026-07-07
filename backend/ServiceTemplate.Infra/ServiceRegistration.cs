@@ -12,10 +12,10 @@ public static class ServiceRegistration
 
         // Singleton: the caching decorator holds state (an in-memory dictionary) that must survive
         // across requests to be useful — a deliberate exception to the default Scoped lifetime.
-        services.AddSingleton<IWidgetRepository>(sp =>
+        services.AddSingleton<ITaskRepository>(sp =>
         {
-            var postgresRepository = new PostgresWidgetRepository(configuration.GetConnectionString("DefaultConnection")!);
-            return new CachedWidgetRepository(postgresRepository);
+            var postgresRepository = new PostgresTaskRepository(configuration.GetConnectionString("DefaultConnection")!);
+            return new CachedTaskRepository(postgresRepository);
         });
 
         // Null Object pattern: the feature flag is read once, here, at the composition root.
