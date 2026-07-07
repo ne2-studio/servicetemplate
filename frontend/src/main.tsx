@@ -5,8 +5,8 @@ import './index.css';
 import { AuthProvider } from 'react-oidc-context';
 
 const oidcConfig = {
-  authority: 'https://your-oidc-provider.example.com',
-  client_id: 'REPLACE_ME',
+  authority: import.meta.env.VITE_OIDC_AUTHORITY,
+  client_id: import.meta.env.VITE_OIDC_CLIENT_ID,
   redirect_uri: `${window.location.origin}/callback`,
   post_logout_redirect_uri: window.location.origin,
   response_type: 'code',
