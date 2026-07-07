@@ -1,0 +1,43 @@
+@ServiceTemplate.Api_HostAddress = http://localhost:5050
+
+GET {{ServiceTemplate.Api_HostAddress}}/health
+Accept: application/json
+
+###
+
+POST {{ServiceTemplate.Api_HostAddress}}/api/widgets
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "my-first-widget"
+}
+
+###
+
+GET {{ServiceTemplate.Api_HostAddress}}/api/widgets?skip=0&take=10
+Authorization: Bearer {{token}}
+Accept: application/json
+
+###
+
+GET {{ServiceTemplate.Api_HostAddress}}/api/widgets/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{token}}
+Accept: application/json
+
+###
+
+PATCH {{ServiceTemplate.Api_HostAddress}}/api/widgets/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "renamed-widget"
+}
+
+###
+
+DELETE {{ServiceTemplate.Api_HostAddress}}/api/widgets/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{token}}
+
+###
